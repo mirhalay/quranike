@@ -17,7 +17,7 @@ function ComboChapters({ selectedType, selectedChapter, setSelectedChapter }) {
 
   useEffect(() => {
     axios
-      .get("/tr-chapters.json")
+      .get("tr-chapters.json")
       .then(({ status, data }) => status === 200 && setChapters(data));
   }, []);
 
