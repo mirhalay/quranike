@@ -17,7 +17,7 @@ function ComboChapters({ selectedType, selectedChapter, setSelectedChapter }) {
 
   useEffect(() => {
     axios
-      .get("quranike/tr-chapters.json")
+      .get("tr-chapters.json")
       .then(({ status, data }) => status === 200 && setChapters(data));
   }, []);
 
@@ -54,7 +54,7 @@ function useChapterContent() {
     getChapter: (selectedChapter) => {
       selectedChapter > 0 &&
         axios
-          .get(`quranike/chapters/tr/${selectedChapter}.json`)
+          .get(`chapters/tr/${selectedChapter}.json`)
           .then(({ status, data }) => {
             status === 200 && setChapterContent(data);
           });
