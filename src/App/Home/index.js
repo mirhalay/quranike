@@ -1,14 +1,27 @@
-import { Card, Container, Form } from "react-bootstrap";
+import { Card, Container, Form, Row, Spinner, Stack } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function ComboType({ selectedType, onChange }) {
+function CheckType({ selectedType, onChange }) {
   return (
-    <Form.Select onChange={onChange} value={selectedType}>
-      <option value={0}>[Any]</option>
-      <option value="meccan">Meccan</option>
-      <option value="medinan">Medinan</option>
-    </Form.Select>
+    <Form.Group>
+      <Stack direction="horizontal" className="d-flex align-items-end">
+        <Form.Check
+          label="Meccan"
+          checked={selectedType.meccan}
+          onChange={onChange}
+          value="meccan"
+          className="me-2"
+        />
+
+        <Form.Check
+          label="Medinan"
+          checked={selectedType.medinan}
+          onChange={onChange}
+          value="medinan"
+        />
+      </Stack>
+    </Form.Group>
   );
 }
 
@@ -21,24 +34,21 @@ function ComboChapters({ selectedType, selectedChapter, setSelectedChapter }) {
       .then(({ status, data }) => status === 200 && setChapters(data));
   }, []);
 
-  const chaptersFilteredByType = chapters?.filter(
-    (i) => parseInt(selectedType) === 0 || i.type === selectedType
-  );
+  const chaptersFilteredByType = chapters?.filter((i) => selectedType[i.type]);
 
   return (
-    chapters && (
-      <Form.Select
-        value={selectedChapter}
-        onChange={(i) => setSelectedChapter(i.target.value)}
-      >
-        <option value={0}>[Not Selected]</option>
-        {chaptersFilteredByType.map((i) => (
+    <Form.Select
+      value={selectedChapter}
+      onChange={(i) => setSelectedChapter(i.target.value)}
+    >
+      <option value={0}>[Not Selected]</option>
+      {chapters &&
+        chaptersFilteredByType.map((i) => (
           <option key={i.id} value={i.id}>
-            {i.translation} ({i.id}) {!selectedType && `[${i.type}]`}
+            {i.transliteration} ({i.id})
           </option>
         ))}
-      </Form.Select>
-    )
+    </Form.Select>
   );
 }
 
@@ -46,26 +56,61 @@ function ComboChapters({ selectedType, selectedChapter, setSelectedChapter }) {
 //   Math.floor(Math.random() * (max - min + 1) + min);
 
 function useChapterContent() {
-  const [chapterContent, setChapterContent] = useState();
+  const [chapterContent, setChapterContent] = useState(null);
 
   return {
     chapterContent,
+    isLoading: chapterContent === undefined,
     setChapterContent,
     getChapter: (selectedChapter) => {
-      selectedChapter > 0 &&
+      if (selectedChapter > 0) {
+        setChapterContent(undefined);
         axios
-          .get(`chapters/tr/${selectedChapter}.json`)
+          .get(`chapters/en/${selectedChapter}.json`)
           .then(({ status, data }) => {
             status === 200 && setChapterContent(data);
           });
+      } else setChapterContent(null);
     },
   };
 }
 
+function ShowChapterContent({ chapterContent, isLoading }) {
+  return chapterContent ? (
+    <>
+      <h5 className="mt-4 mb-2">
+        {chapterContent.translation} {`[${chapterContent.type}]`}
+      </h5>
+
+      <ol>
+        {chapterContent.verses.map((i) => (
+          <Card key={i.id} className="my-2">
+            <li className="py-1 ps-1">
+              <span className="text-dark">{i.translation}</span>
+            </li>
+          </Card>
+        ))}
+      </ol>
+    </>
+  ) : isLoading ? (
+    <Container className="p-2">
+      <Spinner />
+    </Container>
+  ) : (
+    <Container className="p-2">
+      <p>please select a chapter to show.</p>
+    </Container>
+  );
+}
+
 export default function Home() {
-  const [selectedType, setSelectedType] = useState(0);
+  const [selectedType, setSelectedType] = useState({
+    medinan: true,
+    meccan: true,
+  });
   const [selectedChapter, setSelectedChapter] = useState(0);
-  const { chapterContent, setChapterContent, getChapter } = useChapterContent();
+  const { chapterContent, setChapterContent, getChapter, isLoading } =
+    useChapterContent();
 
   useEffect(() => {
     setChapterContent();
@@ -75,33 +120,39 @@ export default function Home() {
 
   return (
     <Container className="p-5">
-      <Form className="px-5">
-        <ComboType
-          selectedType={selectedType}
-          onChange={(i) => {
-            setSelectedChapter(0);
-            setSelectedType(i.target.value);
-          }}
-        />
+      <Form className="px-2 border p-3">
+        <Container>
+          <Stack direction="horizontal">
+            <Form.Text className="me-3">Type: </Form.Text>
+            <CheckType
+              selectedType={selectedType}
+              onChange={(i) => {
+                setSelectedChapter(0);
+                setSelectedType({
+                  ...selectedType,
+                  [i.target.value]: i.target.checked,
+                });
+              }}
+            />
+          </Stack>
 
-        <ComboChapters
-          selectedType={selectedType}
-          selectedChapter={selectedChapter}
-          setSelectedChapter={setSelectedChapter}
-        />
+          <Stack direction="horizontal" className="mt-3">
+            <Form.Text className="me-3">Chapter: </Form.Text>
+            <Row className="ms-1">
+              <ComboChapters
+                selectedType={selectedType}
+                selectedChapter={selectedChapter}
+                setSelectedChapter={setSelectedChapter}
+              />
+            </Row>
+          </Stack>
+        </Container>
       </Form>
 
-      <Container className="p-3">
-        <h5>{chapterContent?.translation}</h5>
-
-        <ol>
-          {chapterContent?.verses.map((i) => (
-            <Card key={i.id} className="my-2">
-              <li className="p-2">{i.translation}</li>
-            </Card>
-          ))}
-        </ol>
-      </Container>
+      <ShowChapterContent
+        isLoading={isLoading}
+        chapterContent={chapterContent}
+      />
     </Container>
   );
 }
