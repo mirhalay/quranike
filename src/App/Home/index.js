@@ -38,7 +38,9 @@ function CheckType({ selectedType, onChange }) {
 }
 
 function ComboChapters({ selectedType, selectedChapter, setSelectedChapter }) {
-  const [chapters] = useState(chaptersJSON);
+  const [chapters] = useState(
+    chaptersJSON.sort((j, k) => (j.reveal_order > k.reveal_order ? 1 : -1))
+  );
   const { locale, $t } = useIntl();
 
   const chaptersFilteredByType = chapters?.filter((i) => selectedType[i.type]);
