@@ -4,5 +4,7 @@
   "meccan": "Meccan",
   "medinan": "Medinan",
   "type": "Type",
-  "chapter": "Chapter"
+  "chapter": "Chapter",
+  "verses": "verses",
+  "type_chapter_name": "type chapter name..."
 }

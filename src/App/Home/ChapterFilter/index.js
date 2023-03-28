@@ -37,12 +37,12 @@ export default function ChapterFilter({ selectedChapterChanged }) {
             </Stack>
           </Col>
 
-          <Col md={5} className="ps-md-4">
+          <Col md={6} className="ps-md-4">
             <Stack direction="horizontal" className="mt-3 align-items-start">
-              <Form.Text className="me-3">
+              <Form.Text className="me-2">
                 <FormattedMessage id="chapter" />:
               </Form.Text>
-              <Row className="ms-1">
+              <Row>
                 <ComboChapters
                   selectedType={selectedType}
                   selectedChapter={selectedChapter}

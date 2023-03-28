@@ -4,5 +4,7 @@
   "meccan": "Mekki",
   "medinan": "Medeni",
   "type": "Tür",
-  "chapter": "Sure"
+  "chapter": "Sure",
+  "verses": "ayet",
+  "type_chapter_name": "sure ismi girin..."
 }
