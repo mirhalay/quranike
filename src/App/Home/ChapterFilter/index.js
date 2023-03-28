@@ -28,7 +28,6 @@ export default function ChapterFilter({ selectedChapterChanged }) {
               <CheckType
                 selectedType={selectedType}
                 onChange={(i) => {
-                  setSelectedChapter(0);
                   setSelectedType({
                     ...selectedType,
                     [i.target.value]: i.target.checked,
@@ -38,7 +37,7 @@ export default function ChapterFilter({ selectedChapterChanged }) {
             </Stack>
           </Col>
 
-          <Col md={4} className="ps-md-4">
+          <Col md={5} className="ps-md-4">
             <Stack direction="horizontal" className="mt-3 align-items-start">
               <Form.Text className="me-3">
                 <FormattedMessage id="chapter" />:

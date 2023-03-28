@@ -9,10 +9,6 @@ export default function useChapterContent() {
   const { locale } = useIntl();
   const [chapterContent, setChapterContent] = useState(null);
 
-  useEffect(() => {
-    setChapterContent(null);
-  }, [locale]);
-
   const chapterGetter = (chapter) => {
     setChapterContent(undefined);
     axios
