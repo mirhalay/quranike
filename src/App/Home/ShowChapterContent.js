@@ -12,9 +12,9 @@ export default function ShowChapterContent({ chapterContent, isLoading }) {
       </h5>
 
       {chapterContent.verses.map((i) => (
-        <Card key={i.id} className="my-3 ps-2 border-1">
+        <Card key={i.id} className="my-3 ps-2 border-1 p-1">
           <Card.Text className="text-dark">
-            {i.id} - {i.translation}
+            ({i.id}) {i.translation}
           </Card.Text>
         </Card>
       ))}

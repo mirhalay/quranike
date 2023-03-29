@@ -18,7 +18,7 @@ export default function ChapterFilter({ selectedChapterChanged }) {
 
   return (
     <Container className="px-md-4 px-xs-2">
-      <Form className="border pt-3 pb-4 ps-3 ps-md-5">
+      <Form className="border pt-3 pb-4 ps-3 ps-md-5 pe-2">
         <Row className="align-items-center">
           <Col md="auto">
             <Stack direction="horizontal">

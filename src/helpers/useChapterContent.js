@@ -14,7 +14,21 @@ export default function useChapterContent() {
     axios
       .get(`chapters/${[locale.substring(0, 2)]}/${chapter}.json`)
       .then(({ status, data }) => {
-        status === 200 && setChapterContent(data);
+        if (status === 200) {
+          data.verses = data.verses
+            .filter(
+              (val, index, arr) =>
+                index === 0 || val.translation !== arr[index - 1].translation
+            )
+            .map((item, index, arr) => {
+              const nextID = arr[index + 1]?.id;
+              if (nextID && item.id + 1 !== nextID)
+                item.id = `${item.id}-${nextID - 1}`;
+              return item;
+            });
+
+          setChapterContent(data);
+        }
       });
   };
 
