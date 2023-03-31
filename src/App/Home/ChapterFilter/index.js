@@ -9,12 +9,12 @@ export default function ChapterFilter({ selectedChapterChanged }) {
     medinan: true,
     meccan: true,
   });
-  const [selectedChapter, setSelectedChapter] = useState(0);
+  const [selectedChapterID, setSelectedChapterID] = useState(0);
 
   useEffect(() => {
-    selectedChapterChanged(selectedChapter);
+    selectedChapterChanged(selectedChapterID);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedChapter]);
+  }, [selectedChapterID]);
 
   return (
     <Container className="px-md-4 px-xs-2">
@@ -45,8 +45,8 @@ export default function ChapterFilter({ selectedChapterChanged }) {
               <Row>
                 <ComboChapters
                   selectedType={selectedType}
-                  selectedChapter={selectedChapter}
-                  setSelectedChapter={setSelectedChapter}
+                  selectedChapterID={selectedChapterID}
+                  setSelectedChapterID={setSelectedChapterID}
                 />
               </Row>
             </Stack>

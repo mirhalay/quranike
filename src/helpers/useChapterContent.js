@@ -2,9 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 
-// const randomIntFromInterval = (min, max) =>
-//   Math.floor(Math.random() * (max - min + 1) + min);
-
 export default function useChapterContent() {
   const { locale } = useIntl();
   const [chapterContent, setChapterContent] = useState(null);
@@ -41,9 +38,9 @@ export default function useChapterContent() {
     chapterContent,
     isLoading: chapterContent === undefined,
     setChapterContent,
-    getChapter: (selectedChapter) => {
-      if (selectedChapter > 0) {
-        chapterGetter(selectedChapter);
+    getChapter: (selectedChapterID) => {
+      if (selectedChapterID > 0) {
+        chapterGetter(selectedChapterID);
       } else setChapterContent(null);
     },
   };
