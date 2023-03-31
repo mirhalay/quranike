@@ -23,7 +23,7 @@ export default function ShowChapterContent({ chapterContent, isLoading }) {
 
           {paginator.collection.map((i) => (
             <Card key={i.id} className="my-3 ps-2 border-1 p-1">
-              <Card.Text className="text-dark">
+              <Card.Text>
                 ({i.id}) {i.translation}
               </Card.Text>
             </Card>
