@@ -45,6 +45,7 @@ export default function ChapterFilter({ selectedChapterChanged }) {
               <Row>
                 <ComboChapters
                   selectedType={selectedType}
+                  setSelectedType={setSelectedType}
                   selectedChapterID={selectedChapterID}
                   setSelectedChapterID={setSelectedChapterID}
                 />

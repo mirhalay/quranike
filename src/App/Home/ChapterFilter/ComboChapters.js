@@ -11,6 +11,7 @@ import {
 
 export default function ComboChapters({
   selectedType,
+  setSelectedType,
   selectedChapterID,
   setSelectedChapterID,
 }) {
@@ -44,12 +45,18 @@ export default function ComboChapters({
         value={selectedChapterID}
         onChange={(i) => {
           const val = parseInt(i.target.value);
-          return setSelectedChapterID(
+          const id =
             val === -1
               ? randomItemFromArray(chaptersFilteredByType)?.id ??
-                  randomIntFromInterval(1, 114)
-              : val
-          );
+                randomIntFromInterval(1, 114)
+              : val;
+
+          if (id > 0 && !selectedType[chapters.find((i) => i.id === id).type])
+            setSelectedType({
+              ...selectedType,
+              [chapters.find((i) => i.id === id).type]: true,
+            });
+          return setSelectedChapterID(id);
         }}
       >
         <option value={0}>[{$t({ id: "not_selected" })}]</option>
