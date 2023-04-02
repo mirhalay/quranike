@@ -15,8 +15,9 @@ export default function SearchChaptersModal({
     <Modal size="sm" show={chapterList} centered onHide={onHide}>
       <Modal.Header closeButton>
         <FormControl
+          autoFocus
           defaultValue={filterText}
-          placeholder={$t({ id: "type_chapter_name" })}
+          placeholder={$t({ id: "find_chapter" })}
           onKeyDown={(i) => {
             if (i.key === "Enter") setFilterText(i.target.value?.trim());
           }}
@@ -31,7 +32,8 @@ export default function SearchChaptersModal({
                   !filterText ||
                   i[locale.substring(0, 2)]
                     .toLowerCase()
-                    .includes(filterText.toLowerCase())
+                    .includes(filterText.toLowerCase()) ||
+                  i.id.toString().startsWith(filterText)
               )
               .map((i) => (
                 <ListGroup.Item

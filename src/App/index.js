@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Col, FormCheck, Row, Stack } from "react-bootstrap";
+import { Col, Container, FormCheck, Row, Stack } from "react-bootstrap";
 import { IntlProvider } from "react-intl";
 import { LOCALES, messages } from "../locales";
 import Home from "./Home";
@@ -16,11 +16,8 @@ export default function App() {
       locale={languageLocale}
       defaultLocale={DEFAULT_LOCALE}
     >
-      <>
-        <Row
-          direction="horizontal"
-          className="border-bottom py-2 px-4 justify-content-between"
-        >
+      <Container fluid>
+        <Row className="border-bottom py-2 px-md-4 px-1 justify-content-between">
           <Col xs="auto">
             <Stack direction="horizontal">
               <FormCheck
@@ -62,9 +59,9 @@ export default function App() {
             />
           </Col>
         </Row>
+      </Container>
 
-        <Home />
-      </>
+      <Home />
     </IntlProvider>
   );
 }
