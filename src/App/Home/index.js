@@ -1,24 +1,24 @@
 import ShowChapterContent from "./ShowChapterContent";
-import useChapterContent from "../../helpers/useChapterContent";
 import ChapterFilter from "./ChapterFilter";
+import { useSearchParams } from "react-router-dom";
 
 export default function Home() {
-  const { chapterContent, setChapterContent, getChapter, isLoading } =
-    useChapterContent();
+  const [params, setParams] = useSearchParams();
+
+  const selectedChapterID = params.has("sc") ? params.get("sc") : 0;
 
   return (
     <div className="p-3">
       <ChapterFilter
-        selectedChapterChanged={(selectedChapterID) => {
-          setChapterContent();
-          getChapter(selectedChapterID);
+        selectedChapterID={selectedChapterID}
+        setSelectedChapterID={(sc) => {
+          const x = { ...Object.fromEntries(params.entries()), sc };
+          !sc && delete x.sc;
+          setParams(x);
         }}
       />
 
-      <ShowChapterContent
-        isLoading={isLoading}
-        chapterContent={chapterContent}
-      />
+      <ShowChapterContent selectedChapterID={selectedChapterID} />
     </div>
   );
 }

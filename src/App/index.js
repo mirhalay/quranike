@@ -46,7 +46,13 @@ export default function App() {
                 label="EN"
                 type="radio"
                 checked={languageLocale === LOCALES.ENGLISH}
-                onChange={(i) => i.target.checked && setParams({ hl: "en" })}
+                onChange={(i) =>
+                  i.target.checked &&
+                  setParams({
+                    hl: "en",
+                    ...Object.fromEntries(params.entries()),
+                  })
+                }
               />
             </Stack>
           </Col>

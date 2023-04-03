@@ -1,20 +1,17 @@
 import { Col, Container, Form, Row, Stack } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import CheckType from "./CheckType";
 import ComboChapters from "./ComboChapters";
 
-export default function ChapterFilter({ selectedChapterChanged }) {
+export default function ChapterFilter({
+  selectedChapterID,
+  setSelectedChapterID,
+}) {
   const [selectedType, setSelectedType] = useState({
     medinan: true,
     meccan: true,
   });
-  const [selectedChapterID, setSelectedChapterID] = useState(0);
-
-  useEffect(() => {
-    selectedChapterChanged(selectedChapterID);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedChapterID]);
 
   return (
     <Container className="px-md-4 px-xs-2">

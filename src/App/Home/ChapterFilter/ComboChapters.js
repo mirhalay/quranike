@@ -23,15 +23,15 @@ export default function ComboChapters({
   const [chaptersFilteredByType, setChaptersFilteredByType] = useState();
 
   useEffect(() => {
-    const res = chapters.filter((i) => selectedType[i.type]);
-    chapters?.length > 0 && setChaptersFilteredByType(res);
+    if (chapters) {
+      const res = chapters.filter((i) => selectedType[i.type]);
+      chapters?.length > 0 && setChaptersFilteredByType(res);
 
-    if (
-      res.findIndex((i) => {
-        return i.id === parseInt(selectedChapterID);
-      }) === -1
-    ) {
-      setSelectedChapterID(0);
+      if (selectedChapterID) {
+        const cId = parseInt(selectedChapterID);
+        if (!isNaN(cId) && res.findIndex((i) => i.id === cId) === -1)
+          setSelectedChapterID(0);
+      }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -39,24 +39,32 @@ export default function ComboChapters({
 
   const [showSearchModal, setShowSearchModal] = useState();
 
+  useEffect(() => {
+    if (selectedChapterID && chaptersFilteredByType) {
+      const cId = parseInt(selectedChapterID);
+
+      if (cId === -1) {
+        setSelectedChapterID(
+          randomItemFromArray(chaptersFilteredByType)?.id ??
+            randomIntFromInterval(1, 114)
+        );
+      } else if (cId > 0 && !selectedType.meccan && !selectedType.medinan) {
+        setSelectedType({
+          ...selectedType,
+          [chapters.find((i) => i.id === cId).type]: true,
+        });
+      }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedChapterID, chaptersFilteredByType]);
+
   return (
     <Stack direction="horizontal">
       <FormSelect
         value={selectedChapterID}
         onChange={(i) => {
-          const val = parseInt(i.target.value);
-          const id =
-            val === -1
-              ? randomItemFromArray(chaptersFilteredByType)?.id ??
-                randomIntFromInterval(1, 114)
-              : val;
-
-          if (id > 0 && !selectedType[chapters.find((i) => i.id === id).type])
-            setSelectedType({
-              ...selectedType,
-              [chapters.find((i) => i.id === id).type]: true,
-            });
-          return setSelectedChapterID(id);
+          return setSelectedChapterID(parseInt(i.target.value));
         }}
       >
         <option value={0}>[{$t({ id: "not_selected" })}]</option>
