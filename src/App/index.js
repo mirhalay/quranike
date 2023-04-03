@@ -4,19 +4,13 @@ import { LOCALES, messages } from "../locales";
 import Home from "./Home";
 import { BiMoon } from "react-icons/bi";
 import { useSearchParams } from "react-router-dom";
-import { useEffect } from "react";
 
 const DEFAULT_LOCALE = LOCALES.TURKISH;
 
-export default function App() {
+export default function App({ colorMode, setColorMode }) {
   const [params, setParams] = useSearchParams();
 
   const languageLocale = params.get("hl") === "en" ? "en-US" : "tr-TR";
-
-  useEffect(() => {
-    if (new Date().getHours() >= 18)
-      document.documentElement.setAttribute("data-bs-theme", "dark");
-  }, []);
 
   return (
     <IntlProvider
@@ -61,14 +55,9 @@ export default function App() {
             <FormCheck
               label={<BiMoon />}
               type="switch"
-              onChange={() =>
-                document.documentElement.setAttribute(
-                  "data-bs-theme",
-                  document.documentElement.getAttribute("data-bs-theme") ===
-                    "dark"
-                    ? "light"
-                    : "dark"
-                )
+              checked={colorMode === "dark"}
+              onChange={(i) =>
+                setColorMode(i.target.checked ? "dark" : "light")
               }
             />
           </Col>
