@@ -1,9 +1,10 @@
 import { Button, FormSelect, Stack } from "react-bootstrap";
 import { FaArrowLeft as PrevIcon } from "react-icons/fa";
 import { FaArrowRight as NextIcon } from "react-icons/fa";
-export default function ComboPaginator({ paginator }) {
+export default function ComboPaginator({ paginator, hideSingle = false }) {
   return (
-    paginator && (
+    paginator &&
+    (!hideSingle || (hideSingle && paginator?.pageCount > 1)) && (
       <Stack direction="horizontal">
         <Button variant="outline-primary" onClick={paginator?.back}>
           <PrevIcon />

@@ -12,13 +12,16 @@ export default function useChapterContent() {
       .get(`chapters/${[locale.substring(0, 2)]}/${chapter}.json`)
       .then(({ status, data }) => {
         if (status === 200) {
+          const numVerses = data.verses.length;
+
           data.verses = data.verses
             .filter(
               (val, index, arr) =>
                 index === 0 || val.translation !== arr[index - 1].translation
             )
             .map((item, index, arr) => {
-              const nextID = arr[index + 1]?.id;
+              const nextID = arr[index + 1]?.id ?? numVerses + 1;
+
               if (nextID && item.id + 1 !== nextID)
                 item.id = `${item.id}-${nextID - 1}`;
               return item;

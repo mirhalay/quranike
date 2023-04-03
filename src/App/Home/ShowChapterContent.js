@@ -13,8 +13,10 @@ export default function ShowChapterContent({ selectedChapterID }) {
     useChapterContent();
 
   useEffect(() => {
-    setChapterContent();
-    getChapter(selectedChapterID);
+    if (selectedChapterID >= 0 && selectedChapterID <= 114) {
+      setChapterContent();
+      getChapter(selectedChapterID);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChapterID]);
 
@@ -23,14 +25,14 @@ export default function ShowChapterContent({ selectedChapterID }) {
   return chapterContent ? (
     <>
       <h5 className="mt-4 mb-3">
-        {chapterContent.translation}{" "}
+        {chapterContent.id} - {chapterContent.translation}{" "}
         {`[${chapterContent && $t({ id: chapterContent.type })}]`} (
         {chapterContent.total_verses} {$t({ id: "verses" })})
       </h5>
 
       {paginator && (
         <>
-          <ComboPaginator paginator={paginator} />
+          <ComboPaginator paginator={paginator} hideSingle />
 
           {paginator.collection.map((i) => (
             <Card key={i.id} className="my-3 ps-2 border-1 p-1">
@@ -44,7 +46,7 @@ export default function ShowChapterContent({ selectedChapterID }) {
     </>
   ) : (
     isLoading && (
-      <Container className="p-2">
+      <Container className="pt-5 d-flex justify-content-center">
         <Spinner />
       </Container>
     )

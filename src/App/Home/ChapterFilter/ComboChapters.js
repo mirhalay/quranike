@@ -27,11 +27,14 @@ export default function ComboChapters({
       const res = chapters.filter((i) => selectedType[i.type]);
       chapters?.length > 0 && setChaptersFilteredByType(res);
 
-      if (selectedChapterID) {
-        const cId = parseInt(selectedChapterID);
-        if (!isNaN(cId) && res.findIndex((i) => i.id === cId) === -1)
-          setSelectedChapterID(0);
-      }
+      const cId = parseInt(selectedChapterID);
+      if (
+        !isNaN(cId) &&
+        cId > 0 &&
+        cId < 115 &&
+        res.findIndex((i) => i.id === cId) === -1
+      )
+        setSelectedChapterID(0);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -40,15 +43,19 @@ export default function ComboChapters({
   const [showSearchModal, setShowSearchModal] = useState();
 
   useEffect(() => {
-    if (selectedChapterID && chaptersFilteredByType) {
-      const cId = parseInt(selectedChapterID);
-
+    const cId = parseInt(selectedChapterID);
+    if (!isNaN(cId) && chaptersFilteredByType) {
       if (cId === -1) {
         setSelectedChapterID(
           randomItemFromArray(chaptersFilteredByType)?.id ??
             randomIntFromInterval(1, 114)
         );
-      } else if (cId > 0 && !selectedType.meccan && !selectedType.medinan) {
+      } else if (
+        cId > 0 &&
+        cId < 115 &&
+        !selectedType.meccan &&
+        !selectedType.medinan
+      ) {
         setSelectedType({
           ...selectedType,
           [chapters.find((i) => i.id === cId).type]: true,
