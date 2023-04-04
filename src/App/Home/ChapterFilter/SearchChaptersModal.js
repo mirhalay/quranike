@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { FormControl, ListGroup, Modal } from "react-bootstrap";
 import { useIntl } from "react-intl";
+import { TYPE_ENUM } from "../../../constants";
+import CheckType from "./CheckType";
+
+const INIT_TYPE = TYPE_ENUM.any;
 
 export default function SearchChaptersModal({
   onHide,
@@ -10,6 +14,9 @@ export default function SearchChaptersModal({
   const { locale, $t } = useIntl();
 
   const [filterText, setFilterText] = useState("");
+  const filterTypeState = useState(INIT_TYPE);
+
+  const typeFilterValue = filterTypeState[0];
 
   return (
     <Modal size="sm" show={chapterList} centered onHide={onHide}>
@@ -24,9 +31,15 @@ export default function SearchChaptersModal({
         />
       </Modal.Header>
       <Modal.Body className="show-grid">
+        <CheckType className="mb-1" filterTypeState={filterTypeState} />
         {chapterList && (
           <ListGroup style={{ maxHeight: 350, overflowY: "scroll" }}>
             {chapterList
+              .filter(
+                (i) =>
+                  TYPE_ENUM[i.type] === typeFilterValue ||
+                  typeFilterValue === TYPE_ENUM.any
+              )
               .filter(
                 (i) =>
                   !filterText ||
