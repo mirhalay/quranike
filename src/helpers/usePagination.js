@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function usePagination(pageLen, collection) {
+export default function usePagination(pageLen, collection, filter = (x) => x) {
   const [PAGE_LEN] = useState(pageLen);
 
   const [page, setPage] = useState(1);
@@ -9,7 +9,7 @@ export default function usePagination(pageLen, collection) {
     collection && setPage(1);
   }, [collection]);
 
-  const _pageCount = () => Math.ceil(collection?.length / PAGE_LEN);
+  const _pageCount = () => Math.ceil(filter(collection)?.length / PAGE_LEN);
 
   return {
     page,
@@ -24,7 +24,7 @@ export default function usePagination(pageLen, collection) {
     next: () => setPage((i) => (i < _pageCount() ? i + 1 : 1)),
     get collection() {
       return (
-        collection?.slice(
+        filter(collection)?.slice(
           (page - 1) * PAGE_LEN,
           (page - 1) * PAGE_LEN + PAGE_LEN
         ) ?? []

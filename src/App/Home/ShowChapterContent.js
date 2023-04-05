@@ -17,7 +17,7 @@ import usePagination from "../../helpers/usePagination";
 
 const PAGE_LEN = 25;
 
-const TA_SPLITTER_SYMBOL = "_";
+const TA_SPLITTER_SYMBOL = "*";
 
 export default function ShowChapterContent({ selectedChapterID }) {
   const { $t } = useIntl();
@@ -34,16 +34,17 @@ export default function ShowChapterContent({ selectedChapterID }) {
 
   const paginator = usePagination(
     PAGE_LEN,
-    pickedVerses.length > 0 && selecting === null
-      ? chapterContent?.verses.filter((i) =>
-          pickedVerses.includes(i.id.toString())
-        )
-      : chapterContent?.verses
+    chapterContent?.verses,
+    (collection) =>
+      pickedVerses.length > 0 && selecting === null
+        ? collection.filter((i) => pickedVerses.includes(i.id.toString()))
+        : collection
   );
 
   useEffect(() => {
     if (selectedChapterID >= 0 && selectedChapterID <= 114) {
       setChapterContent();
+      setSelecting(null);
       getChapter(selectedChapterID);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -55,12 +56,12 @@ export default function ShowChapterContent({ selectedChapterID }) {
       ta: selecting?.join(TA_SPLITTER_SYMBOL),
     };
     if (!x.ta || reset) delete x.ta;
-    setSearchParams(x);
+    setSearchParams(x, {});
   };
 
   return chapterContent ? (
     <>
-      <Row className="justify-content-between align-items-end">
+      <Row className="justify-content-between align-items-end mb-3">
         <Col xs="auto">
           <h5 className="mt-4 mb-3">
             {chapterContent.id} - {chapterContent.translation}{" "}
@@ -76,6 +77,7 @@ export default function ShowChapterContent({ selectedChapterID }) {
               onClick={() => {
                 if (selecting) {
                   setTaParam();
+                  paginator?.setPage(1);
                   setSelecting(null);
                 } else {
                   setSelecting(pickedVerses);
@@ -89,7 +91,10 @@ export default function ShowChapterContent({ selectedChapterID }) {
             {!selecting && pickedVerses.length > 0 && (
               <Button
                 variant="outline-secondary"
-                onClick={() => setTaParam(true)}
+                onClick={() => {
+                  setTaParam(true);
+                  paginator?.setPage(1);
+                }}
               >
                 reset select
               </Button>
