@@ -12,6 +12,13 @@ export default function App({ colorMode, setColorMode }) {
 
   const languageLocale = params.get("hl") === "en" ? "en-US" : "tr-TR";
 
+  const setLangParam = (hl) => {
+    const x = {};
+    if (hl) x.hl = hl;
+    if (params.has("sc")) x.sc = params.get("sc");
+    setParams(x);
+  };
+
   return (
     <IntlProvider
       messages={messages[languageLocale]}
@@ -28,11 +35,7 @@ export default function App({ colorMode, setColorMode }) {
                 label="TR"
                 type="radio"
                 checked={languageLocale === LOCALES.TURKISH}
-                onChange={(i) => {
-                  const sp = Object.fromEntries(params.entries());
-                  delete sp.hl;
-                  return i.target.checked && setParams(sp);
-                }}
+                onChange={({ target }) => target.checked && setLangParam()}
               />
 
               <FormCheck
@@ -40,13 +43,7 @@ export default function App({ colorMode, setColorMode }) {
                 label="EN"
                 type="radio"
                 checked={languageLocale === LOCALES.ENGLISH}
-                onChange={(i) =>
-                  i.target.checked &&
-                  setParams({
-                    hl: "en",
-                    ...Object.fromEntries(params.entries()),
-                  })
-                }
+                onChange={({ target }) => target.checked && setLangParam("en")}
               />
             </Stack>
           </Col>

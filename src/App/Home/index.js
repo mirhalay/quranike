@@ -12,8 +12,9 @@ export default function Home() {
       <ChapterFilter
         selectedChapterID={selectedChapterID}
         setSelectedChapterID={(sc) => {
-          const x = { ...Object.fromEntries(params.entries()), sc };
-          !sc && delete x.sc;
+          const x = {};
+          if (params.has("hl")) x.hl = params.get("hl");
+          if (sc > 0) x.sc = sc;
           setParams(x);
         }}
       />
