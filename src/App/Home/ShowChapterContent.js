@@ -10,7 +10,6 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { useIntl } from "react-intl";
-import { useSearchParams } from "react-router-dom";
 import ComboPaginator from "../../core/ComboPaginator";
 import useChapterContent from "../../helpers/useChapterContent";
 import usePagination from "../../helpers/usePagination";
@@ -19,22 +18,22 @@ const PAGE_LEN = 25;
 
 const TA_SPLITTER_SYMBOL = "*";
 
-export default function ShowChapterContent({ selectedChapterID }) {
-  const { $t } = useIntl();
+export default function ShowChapterContent({
+  selectedChapterID,
+  selectedVersesString,
+  setSelectedVersesString,
+}) {
+  const { $t, locale } = useIntl();
   const { chapterContent, setChapterContent, getChapter, isLoading } =
     useChapterContent();
 
   const [selecting, setSelecting] = useState(null);
 
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const pickedVerses = searchParams.has("ta")
-    ? searchParams.get("ta").split(TA_SPLITTER_SYMBOL) ?? []
-    : [];
+  const [pickedVerses, setPickedVerses] = useState([]);
 
   const paginator = usePagination(
     PAGE_LEN,
-    chapterContent?.verses,
+    chapterContent?.verses ?? [],
     (collection) =>
       pickedVerses.length > 0 && selecting === null
         ? collection.filter((i) => pickedVerses.includes(i.id.toString()))
@@ -42,22 +41,22 @@ export default function ShowChapterContent({ selectedChapterID }) {
   );
 
   useEffect(() => {
+    const selectedVersesArr =
+      selectedVersesString?.split(TA_SPLITTER_SYMBOL).sort() ?? [];
+    setPickedVerses(selectedVersesArr.length > 0 ? selectedVersesArr : []);
+  }, [selectedVersesString]);
+
+  useEffect(() => {
     if (selectedChapterID >= 0 && selectedChapterID <= 114) {
       setChapterContent();
-      setSelecting(null);
-      getChapter(selectedChapterID);
+      getChapter(selectedChapterID, locale);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedChapterID]);
+  }, [selectedChapterID, locale]);
 
-  const setTaParam = (reset = false) => {
-    const x = {
-      ...Object.fromEntries(searchParams.entries()),
-      ta: selecting?.join(TA_SPLITTER_SYMBOL),
-    };
-    if (!x.ta || reset) delete x.ta;
-    setSearchParams(x, {});
-  };
+  useEffect(() => {
+    chapterContent && setSelecting(null);
+  }, [chapterContent]);
 
   return chapterContent ? (
     <>
@@ -76,7 +75,7 @@ export default function ShowChapterContent({ selectedChapterID }) {
               variant="outline-primary"
               onClick={() => {
                 if (selecting) {
-                  setTaParam();
+                  setSelectedVersesString(selecting?.join(TA_SPLITTER_SYMBOL));
                   paginator?.setPage(1);
                   setSelecting(null);
                 } else {
@@ -92,7 +91,7 @@ export default function ShowChapterContent({ selectedChapterID }) {
               <Button
                 variant="outline-secondary"
                 onClick={() => {
-                  setTaParam(true);
+                  setSelectedVersesString(null, true);
                   paginator?.setPage(1);
                 }}
               >
