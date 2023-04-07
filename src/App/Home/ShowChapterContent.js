@@ -2,74 +2,31 @@ import { useCallback, useEffect, useState } from "react";
 import {
   Button,
   ButtonGroup,
-  Card,
   Col,
   Container,
-  FormCheck,
+  FormText,
   Row,
   Spinner,
 } from "react-bootstrap";
 import { useIntl } from "react-intl";
 import ComboPaginator from "../../core/ComboPaginator";
+import { getIdListByRange, isIdRangeIncluded } from "../../helpers/ranged_ids";
 import useChapterContent from "../../helpers/useChapterContent";
 import usePagination from "../../helpers/usePagination";
+import VersesStr from "../../helpers/verses_str";
+import CheckableVerseItem from "./CheckableVerseItem";
+
+import {
+  AiOutlineSelect as SelectIcon,
+  AiOutlineSave as SaveIcon,
+  AiFillEdit as EditIcon,
+} from "react-icons/ai";
+import { TiDeleteOutline as ResetIcon } from "react-icons/ti";
+import { RxReset as CancelIcon } from "react-icons/rx";
 
 const PAGE_LEN = 25;
 
-const TA_SPLITTER_SYMBOL = "*";
-
-function getIdListByRange(id) {
-  const xarr = id
-    .toString()
-    .split("-")
-    .map((i) => parseInt(i));
-
-  const [startID, endID] = [xarr[0], xarr[1] ?? xarr[0]];
-
-  return [...Array(endID - startID + 1).keys()].map(
-    (_, index) => startID + index
-  );
-}
-
-function getStartAndEndItemsFromArray(arr) {
-  return [arr[0], arr[arr.length - 1]];
-}
-
-function checkIfIdRangeSelected(idsArr, pickedVerses) {
-  return idsArr
-    .map((i) => parseInt(i))
-    .every((id) => pickedVerses.includes(id));
-}
-
-function CheckItem({ pickedVerses, setPickedVerses, item }) {
-  const idsArr = getIdListByRange(item.id);
-
-  const [startID, endID] = getStartAndEndItemsFromArray(idsArr);
-
-  return (
-    <FormCheck
-      onChange={(e) => {
-        const prunedVerses = pickedVerses.filter(
-          (x) => x < startID || x > endID
-        );
-
-        if (e.target.checked)
-          setPickedVerses(
-            [...prunedVerses, ...idsArr].sort((item1, item2) =>
-              item1 > item2 ? 1 : -1
-            )
-          );
-        else setPickedVerses(prunedVerses);
-      }}
-      checked={checkIfIdRangeSelected(idsArr, pickedVerses)}
-      label={
-        <Card.Text>
-          ({item.id}) {item.translation}
-        </Card.Text>
-      }
-    />
-  );
-}
+const versesStrHelper = new VersesStr("_");
 
 export default function ShowChapterContent({
   selectedChapterID,
@@ -88,7 +45,7 @@ export default function ShowChapterContent({
     (collection) =>
       pickedVerses.length > 0 && !selecting
         ? collection.filter((i) =>
-            checkIfIdRangeSelected(getIdListByRange(i.id), pickedVerses)
+            isIdRangeIncluded(getIdListByRange(i.id), pickedVerses)
           )
         : collection,
     [pickedVerses, selecting]
@@ -101,14 +58,15 @@ export default function ShowChapterContent({
   );
 
   useEffect(() => {
+    window.scroll({ top: 0, left: 0, behavior: "auto" });
+  }, [paginator?.page]);
+
+  useEffect(() => {
     const selectedVersesArr =
-      selectedVersesString
-        ?.split(TA_SPLITTER_SYMBOL)
-        .filter((i) => !isNaN(parseInt(i)))
-        .map((i) => parseInt(i))
-        .sort() ?? [];
+      versesStrHelper.destructSelectedVersesString(selectedVersesString);
     setPickedVerses(selectedVersesArr.length > 0 ? selectedVersesArr : []);
-  }, [selectedVersesString]);
+    setSelecting(false);
+  }, [selectedVersesString, selectedChapterID]);
 
   useEffect(() => {
     if (selectedChapterID >= 0 && selectedChapterID <= 114) {
@@ -118,51 +76,73 @@ export default function ShowChapterContent({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChapterID, locale]);
 
-  useEffect(() => {
-    chapterContent && setSelecting(false);
-  }, [chapterContent]);
-
   return chapterContent ? (
     <>
-      <Row className="justify-content-between align-items-end mb-3">
+      <Row className="justify-content-between align-items-end mb-3 pt-4">
         <Col xs="auto">
-          <h5 className="mt-4 mb-3">
-            {chapterContent.id} - {chapterContent.translation}{" "}
-            {`[${chapterContent && $t({ id: chapterContent.type })}]`} (
+          <h4 className="mb-0">
+            {chapterContent.translation} :{chapterContent.id}
+          </h4>
+          <FormText>
+            {`${chapterContent && $t({ id: chapterContent.type })}`} (
             {chapterContent.total_verses} {$t({ id: "verses" })})
-          </h5>
+          </FormText>
         </Col>
 
-        <Col xs="auto">
+        <Col md="auto" xs={12} className="mt-1 text-start">
           <ButtonGroup>
             <Button
+              size="sm"
               variant="outline-primary"
               onClick={() => {
                 if (selecting) {
                   setSelectedVersesString(
-                    pickedVerses?.join(TA_SPLITTER_SYMBOL)
+                    versesStrHelper.constructSelectedVersesString(pickedVerses)
                   );
                   paginator?.setPage(1);
-                  setSelecting(false);
-                } else {
-                  setSelecting(true);
                 }
+                setSelecting((i) => !i);
               }}
             >
-              {selecting ? "save" : pickedVerses.length > 0 ? "edit" : "start"}{" "}
-              select
+              {selecting ? (
+                <SaveIcon />
+              ) : pickedVerses.length > 0 ? (
+                <EditIcon />
+              ) : (
+                <SelectIcon />
+              )}{" "}
             </Button>
 
-            {!selecting && pickedVerses.length > 0 && (
+            {selecting ? (
               <Button
+                size="sm"
                 variant="outline-secondary"
                 onClick={() => {
-                  setSelectedVersesString(null, true);
-                  paginator?.setPage(1);
+                  const selectedVersesArr =
+                    versesStrHelper.destructSelectedVersesString(
+                      selectedVersesString
+                    );
+                  setPickedVerses(
+                    selectedVersesArr.length > 0 ? selectedVersesArr : []
+                  );
+                  setSelecting(false);
                 }}
               >
-                reset select
+                <CancelIcon />
               </Button>
+            ) : (
+              pickedVerses.length > 0 && (
+                <Button
+                  size="sm"
+                  variant="outline-secondary"
+                  onClick={() => {
+                    setSelectedVersesString(null, true);
+                    paginator?.setPage(1);
+                  }}
+                >
+                  <ResetIcon />
+                </Button>
+              )
             )}
           </ButtonGroup>
         </Col>
@@ -170,23 +150,17 @@ export default function ShowChapterContent({
 
       {paginator && (
         <>
-          <ComboPaginator paginator={paginator} hideSingle />
-
           {paginator.collection.map((i) => (
-            <Card key={i.id} className="my-3 ps-2 border-1 p-1">
-              {!selecting ? (
-                <Card.Text>
-                  ({i.id}) {i.translation}
-                </Card.Text>
-              ) : (
-                <CheckItem
-                  pickedVerses={pickedVerses}
-                  setPickedVerses={setPickedVerses}
-                  item={i}
-                />
-              )}
-            </Card>
+            <CheckableVerseItem
+              key={i.id}
+              className="my-3 ps-2 border-1 pb-1"
+              pickedVerses={pickedVerses}
+              setPickedVerses={setPickedVerses}
+              item={i}
+              checkable={selecting}
+            />
           ))}
+          <ComboPaginator paginator={paginator} hideSingle />
         </>
       )}
     </>
