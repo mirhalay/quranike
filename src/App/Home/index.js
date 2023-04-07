@@ -9,15 +9,6 @@ export default function Home() {
 
   const selectedVersesString = params.has("ta") ? params.get("ta") : null;
 
-  const setSelectedVersesString = (ta, reset = false) => {
-    const x = {
-      ...Object.fromEntries(params.entries()),
-      ta,
-    };
-    if (!x.ta || reset) delete x.ta;
-    setParams(x);
-  };
-
   return (
     <div className="p-3">
       <ChapterFilter
@@ -33,7 +24,14 @@ export default function Home() {
       <ShowChapterContent
         selectedChapterID={selectedChapterID}
         selectedVersesString={selectedVersesString}
-        setSelectedVersesString={setSelectedVersesString}
+        setSelectedVersesString={(ta, reset = false) => {
+          const x = {
+            ...Object.fromEntries(params.entries()),
+            ta,
+          };
+          if (!x.ta || reset) delete x.ta;
+          setParams(x);
+        }}
       />
     </div>
   );

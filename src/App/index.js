@@ -16,6 +16,7 @@ export default function App({ colorMode, setColorMode }) {
     const x = {};
     if (hl) x.hl = hl;
     if (params.has("sc")) x.sc = params.get("sc");
+    if (params.has("ta")) x.ta = params.get("ta");
     setParams(x);
   };
 
