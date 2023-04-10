@@ -6,10 +6,11 @@ export default function ComboPaginator({ paginator, hideSingle = false }) {
     paginator &&
     (!hideSingle || (hideSingle && paginator?.pageCount > 1)) && (
       <Stack direction="horizontal">
-        <Button variant="outline-primary" onClick={paginator?.back}>
+        <Button variant="outline-secondary" size="sm" onClick={paginator?.back}>
           <PrevIcon />
         </Button>
         <FormSelect
+          size="sm"
           className="mx-2"
           style={{ maxWidth: 70 }}
           onChange={(i) => paginator?.setPage(parseInt(i.target.value))}
@@ -20,7 +21,7 @@ export default function ComboPaginator({ paginator, hideSingle = false }) {
           ))}
           ;
         </FormSelect>
-        <Button variant="outline-primary" onClick={paginator?.next}>
+        <Button variant="outline-secondary" size="sm" onClick={paginator?.next}>
           <NextIcon />
         </Button>
       </Stack>

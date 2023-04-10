@@ -4,6 +4,7 @@ import {
   ButtonGroup,
   Col,
   Container,
+  FormCheck,
   FormText,
   Row,
   Spinner,
@@ -20,6 +21,7 @@ import {
   AiOutlineSelect as SelectIcon,
   AiOutlineSave as SaveIcon,
   AiFillEdit as EditIcon,
+  AiOutlineFilter as OnlyIcon,
 } from "react-icons/ai";
 import { TiDeleteOutline as ResetIcon } from "react-icons/ti";
 import { RxReset as CancelIcon } from "react-icons/rx";
@@ -27,6 +29,17 @@ import { RxReset as CancelIcon } from "react-icons/rx";
 const PAGE_LEN = 25;
 
 const versesStrHelper = new VersesStr("_");
+
+const SelectingEnum = {
+  NO: 0,
+  YES: 1,
+  YES_NARROW: 2,
+
+  switchSelecting: (i) =>
+    i === SelectingEnum.NO ? SelectingEnum.YES : SelectingEnum.NO,
+
+  switchOnly: (i) => (i ? SelectingEnum.YES_NARROW : SelectingEnum.YES),
+};
 
 export default function ShowChapterContent({
   selectedChapterID,
@@ -37,13 +50,14 @@ export default function ShowChapterContent({
   const { chapterContent, setChapterContent, getChapter, isLoading } =
     useChapterContent();
 
-  const [selecting, setSelecting] = useState(false);
+  const [selecting, setSelecting] = useState(SelectingEnum.NO);
 
   const [pickedVerses, setPickedVerses] = useState([]);
 
   const filterCallback = useCallback(
     (collection) =>
-      pickedVerses.length > 0 && !selecting
+      pickedVerses.length > 0 &&
+      (selecting === SelectingEnum.NO || selecting === SelectingEnum.YES_NARROW)
         ? collection.filter((i) =>
             isIdRangeIncluded(getIdListByRange(i.id), pickedVerses)
           )
@@ -65,7 +79,7 @@ export default function ShowChapterContent({
     const selectedVersesArr =
       versesStrHelper.destructSelectedVersesString(selectedVersesString);
     setPickedVerses(selectedVersesArr.length > 0 ? selectedVersesArr : []);
-    setSelecting(false);
+    setSelecting(SelectingEnum.NO);
   }, [selectedVersesString, selectedChapterID]);
 
   useEffect(() => {
@@ -76,80 +90,117 @@ export default function ShowChapterContent({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChapterID, locale]);
 
+  useEffect(() => {
+    if (pickedVerses.length === 0 && selecting === SelectingEnum.YES_NARROW)
+      setSelecting(SelectingEnum.YES);
+  }, [pickedVerses, selecting]);
+
+  const SelectionBtns = () => (
+    <ButtonGroup>
+      <Button
+        size="sm"
+        variant="outline-primary"
+        onClick={() => {
+          if (selecting !== SelectingEnum.NO) {
+            setSelectedVersesString(
+              versesStrHelper.constructSelectedVersesString(pickedVerses)
+            );
+            paginator?.setPage(1);
+          }
+          setSelecting(SelectingEnum.switchSelecting);
+        }}
+      >
+        {selecting !== SelectingEnum.NO ? (
+          <SaveIcon />
+        ) : pickedVerses.length > 0 ? (
+          <EditIcon />
+        ) : (
+          <SelectIcon />
+        )}{" "}
+      </Button>
+
+      {selecting !== SelectingEnum.NO ? (
+        <Button
+          size="sm"
+          variant="outline-secondary"
+          onClick={() => {
+            const selectedVersesArr =
+              versesStrHelper.destructSelectedVersesString(
+                selectedVersesString
+              );
+            setPickedVerses(
+              selectedVersesArr.length > 0 ? selectedVersesArr : []
+            );
+            setSelecting(SelectingEnum.NO);
+          }}
+        >
+          <CancelIcon />
+        </Button>
+      ) : (
+        pickedVerses.length > 0 && (
+          <Button
+            size="sm"
+            variant="outline-secondary"
+            onClick={() => {
+              setSelectedVersesString(null, true);
+              paginator?.setPage(1);
+            }}
+          >
+            <ResetIcon />
+          </Button>
+        )
+      )}
+    </ButtonGroup>
+  );
+
   return chapterContent ? (
     <>
-      <Row className="justify-content-between align-items-end mb-3 pt-4">
+      <Row className="mb-2 pt-4">
         <Col xs="auto">
           <h4 className="mb-0">
-            {chapterContent.translation} :{chapterContent.id}
+            {chapterContent.id}. {chapterContent.translation}
           </h4>
           <FormText>
             {`${chapterContent && $t({ id: chapterContent.type })}`} (
             {chapterContent.total_verses} {$t({ id: "verses" })})
           </FormText>
         </Col>
-
-        <Col md="auto" xs={12} className="mt-1 text-start">
-          <ButtonGroup>
-            <Button
-              size="sm"
-              variant="outline-primary"
-              onClick={() => {
-                if (selecting) {
-                  setSelectedVersesString(
-                    versesStrHelper.constructSelectedVersesString(pickedVerses)
-                  );
-                  paginator?.setPage(1);
-                }
-                setSelecting((i) => !i);
-              }}
-            >
-              {selecting ? (
-                <SaveIcon />
-              ) : pickedVerses.length > 0 ? (
-                <EditIcon />
-              ) : (
-                <SelectIcon />
-              )}{" "}
-            </Button>
-
-            {selecting ? (
-              <Button
-                size="sm"
-                variant="outline-secondary"
-                onClick={() => {
-                  const selectedVersesArr =
-                    versesStrHelper.destructSelectedVersesString(
-                      selectedVersesString
-                    );
-                  setPickedVerses(
-                    selectedVersesArr.length > 0 ? selectedVersesArr : []
-                  );
-                  setSelecting(false);
-                }}
-              >
-                <CancelIcon />
-              </Button>
-            ) : (
-              pickedVerses.length > 0 && (
-                <Button
-                  size="sm"
-                  variant="outline-secondary"
-                  onClick={() => {
-                    setSelectedVersesString(null, true);
-                    paginator?.setPage(1);
-                  }}
-                >
-                  <ResetIcon />
-                </Button>
-              )
-            )}
-          </ButtonGroup>
-        </Col>
       </Row>
 
       {paginator && (
         <>
+          <Row className="justify-content-between">
+            <Col xs="auto">
+              <Row className="align-items-end">
+                <Col xs="auto pe-0">
+                  <SelectionBtns />
+                </Col>
+                <Col xs="auto ms-3 p-0">
+                  {selecting !== SelectingEnum.NO &&
+                    pickedVerses.length > 0 && (
+                      <FormCheck
+                        size="sm"
+                        type="switch"
+                        label={<OnlyIcon />}
+                        checked={selecting === SelectingEnum.YES_NARROW}
+                        onChange={(e) => {
+                          setSelecting(
+                            SelectingEnum.switchOnly(e.target.checked)
+                          );
+
+                          if (e.target.checked) paginator?.setPage(1);
+                        }}
+                      />
+                    )}
+                </Col>
+              </Row>
+            </Col>
+
+            <Col xs="auto">
+              <ComboPaginator paginator={paginator} hideSingle />
+            </Col>
+          </Row>
+
           {paginator.collection.map((i) => (
             <CheckableVerseItem
               key={i.id}
@@ -157,10 +208,14 @@ export default function ShowChapterContent({
               pickedVerses={pickedVerses}
               setPickedVerses={setPickedVerses}
               item={i}
-              checkable={selecting}
+              checkable={selecting !== SelectingEnum.NO}
             />
           ))}
-          <ComboPaginator paginator={paginator} hideSingle />
+          <Row className="justify-content-end">
+            <Col xs="auto">
+              <ComboPaginator paginator={paginator} hideSingle />
+            </Col>
+          </Row>
         </>
       )}
     </>
