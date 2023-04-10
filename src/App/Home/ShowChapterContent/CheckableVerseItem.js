@@ -3,22 +3,49 @@ import {
   getIdListByRange,
   getStartAndEndItemsFromArray,
   isIdRangeIncluded,
-} from "../../helpers/ranged_ids";
+} from "../../../helpers/ranged_ids";
+
+function HighlightedText({ text, highlight }) {
+  if (!highlight) return <span>{text}</span>;
+
+  const parts = text.split(new RegExp(`(${highlight})`, "gi"));
+
+  return (
+    <span>
+      {parts.map((part, i) => (
+        <span
+          key={i}
+          style={
+            part.toLowerCase() === highlight.toLowerCase()
+              ? {
+                  fontWeight: "bold",
+                  backgroundColor: "yellow",
+                  color: "black",
+                }
+              : {}
+          }
+        >
+          {part}
+        </span>
+      ))}
+    </span>
+  );
+}
 
 export default function CheckableVerseItem({
   pickedVerses,
   setPickedVerses,
   item,
   checkable = true,
+  searchTerm,
   ...props
 }) {
-  function VerseItem({ item }) {
-    return (
-      <span className="mb-0 pb-0">
-        <FormText>({item.id})</FormText> {item.translation}
-      </span>
-    );
-  }
+  const VerseItem = () => (
+    <span className="mb-0 pb-0">
+      <FormText>({item.id})</FormText>{" "}
+      {<HighlightedText text={item?.translation} highlight={searchTerm} />}
+    </span>
+  );
 
   const idsArr = getIdListByRange(item.id);
 
@@ -42,10 +69,10 @@ export default function CheckableVerseItem({
             else setPickedVerses(prunedVerses);
           }}
           checked={isIdRangeIncluded(idsArr, pickedVerses)}
-          label={<VerseItem item={item} />}
+          label={<VerseItem />}
         />
       ) : (
-        <VerseItem item={item} />
+        <VerseItem />
       )}
     </Card>
   );

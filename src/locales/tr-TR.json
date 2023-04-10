@@ -7,5 +7,7 @@
   "chapter": "Sure",
   "verses": "ayet",
   "find_chapter": "Sure ara...",
-  "random": "Rastgele"
+  "random": "Rastgele",
+  "find_verse": "Ayet ara...",
+  "search_results": "arama sonuçları:"
 }

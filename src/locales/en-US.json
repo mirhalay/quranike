@@ -7,5 +7,7 @@
   "chapter": "Chapter",
   "verses": "verses",
   "find_chapter": "Search a chapter...",
-  "random": "Random"
+  "random": "Random",
+  "find_verse": "Search a verse...",
+  "search_results": "search results:"
 }

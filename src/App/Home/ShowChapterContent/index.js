@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import {
+  Badge,
   Button,
   ButtonGroup,
+  CloseButton,
   Col,
   Container,
   FormCheck,
@@ -9,14 +11,16 @@ import {
   Row,
   Spinner,
 } from "react-bootstrap";
-import { useIntl } from "react-intl";
-import ComboPaginator from "../../core/ComboPaginator";
-import { getIdListByRange, isIdRangeIncluded } from "../../helpers/ranged_ids";
-import useChapterContent from "../../helpers/useChapterContent";
-import usePagination from "../../helpers/usePagination";
-import VersesStr from "../../helpers/verses_str";
+import { FormattedMessage, useIntl } from "react-intl";
+import ComboPaginator from "../../../core/ComboPaginator";
+import {
+  getIdListByRange,
+  isIdRangeIncluded,
+} from "../../../helpers/ranged_ids";
+import useChapterContent from "../../../helpers/useChapterContent";
+import usePagination from "../../../helpers/usePagination";
+import VersesStr from "../../../helpers/verses_str";
 import CheckableVerseItem from "./CheckableVerseItem";
-
 import {
   AiOutlineSelect as SelectIcon,
   AiOutlineSave as SaveIcon,
@@ -25,21 +29,13 @@ import {
 } from "react-icons/ai";
 import { TiDeleteOutline as ResetIcon } from "react-icons/ti";
 import { RxReset as CancelIcon } from "react-icons/rx";
+import { BsSearch as SearchIcon } from "react-icons/bs";
+import SearchVersesModal from "./SearchVersesModal";
+import { SelectingEnum } from "../../../constants";
 
 const PAGE_LEN = 25;
 
 const versesStrHelper = new VersesStr("_");
-
-const SelectingEnum = {
-  NO: 0,
-  YES: 1,
-  YES_NARROW: 2,
-
-  switchSelecting: (i) =>
-    i === SelectingEnum.NO ? SelectingEnum.YES : SelectingEnum.NO,
-
-  switchOnly: (i) => (i ? SelectingEnum.YES_NARROW : SelectingEnum.YES),
-};
 
 export default function ShowChapterContent({
   selectedChapterID,
@@ -52,17 +48,29 @@ export default function ShowChapterContent({
 
   const [selecting, setSelecting] = useState(SelectingEnum.NO);
 
+  const [searchTerm, setSearchTerm] = useState(null);
+  const [showSearchModal, setShowSearchModal] = useState(false);
+
   const [pickedVerses, setPickedVerses] = useState([]);
 
   const filterCallback = useCallback(
-    (collection) =>
-      pickedVerses.length > 0 &&
-      (selecting === SelectingEnum.NO || selecting === SelectingEnum.YES_NARROW)
-        ? collection.filter((i) =>
-            isIdRangeIncluded(getIdListByRange(i.id), pickedVerses)
+    (collection) => {
+      const filteredCollection =
+        pickedVerses.length > 0 &&
+        (selecting === SelectingEnum.NO ||
+          selecting === SelectingEnum.YES_NARROW)
+          ? collection.filter((i) =>
+              isIdRangeIncluded(getIdListByRange(i.id), pickedVerses)
+            )
+          : collection;
+
+      return searchTerm
+        ? filteredCollection.filter((i) =>
+            i.translation.toLowerCase().includes(searchTerm)
           )
-        : collection,
-    [pickedVerses, selecting]
+        : filteredCollection;
+    },
+    [pickedVerses, selecting, searchTerm]
   );
 
   const paginator = usePagination(
@@ -85,6 +93,7 @@ export default function ShowChapterContent({
   useEffect(() => {
     if (selectedChapterID >= 0 && selectedChapterID <= 114) {
       setChapterContent();
+      // setSearchTerm(null);
       getChapter(selectedChapterID, locale);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -95,8 +104,21 @@ export default function ShowChapterContent({
       setSelecting(SelectingEnum.YES);
   }, [pickedVerses, selecting]);
 
+  useEffect(() => {
+    paginator?.setPage(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm]);
+
   const SelectionBtns = () => (
     <ButtonGroup>
+      <Button
+        size="sm"
+        variant="outline-secondary"
+        onClick={() => setShowSearchModal(true)}
+      >
+        <SearchIcon />
+      </Button>
+
       <Button
         size="sm"
         variant="outline-primary"
@@ -155,7 +177,18 @@ export default function ShowChapterContent({
 
   return chapterContent ? (
     <>
-      <Row className="mb-2 pt-4">
+      <SearchVersesModal
+        onHide={setShowSearchModal}
+        show={showSearchModal}
+        filterText={searchTerm}
+        setFilterText={(termStr) => {
+          if (termStr) {
+            setShowSearchModal(false);
+            setSearchTerm(termStr);
+          }
+        }}
+      />
+      <Row className="mb-2 pt-4 justify-content-between">
         <Col xs="auto">
           <h4 className="mb-0">
             {chapterContent.id}. {chapterContent.translation}
@@ -175,13 +208,13 @@ export default function ShowChapterContent({
                 <Col xs="auto pe-0">
                   <SelectionBtns />
                 </Col>
-                <Col xs="auto ms-3 p-0">
+                <Col xs="auto ms-1 p-0">
                   {selecting !== SelectingEnum.NO &&
                     pickedVerses.length > 0 && (
                       <FormCheck
                         size="sm"
                         type="switch"
-                        label={<OnlyIcon />}
+                        label={<OnlyIcon className="p-0" />}
                         checked={selecting === SelectingEnum.YES_NARROW}
                         onChange={(e) => {
                           setSelecting(
@@ -201,6 +234,20 @@ export default function ShowChapterContent({
             </Col>
           </Row>
 
+          {searchTerm && (
+            <div className="mt-2">
+              <FormText>
+                <FormattedMessage id="search_results" />{" "}
+                <Badge
+                  className="bg-secondary text-light"
+                  onClick={() => setSearchTerm(null)}
+                >
+                  {searchTerm} <CloseButton variant="white" />
+                </Badge>
+              </FormText>
+            </div>
+          )}
+
           {paginator.collection.map((i) => (
             <CheckableVerseItem
               key={i.id}
@@ -209,6 +256,7 @@ export default function ShowChapterContent({
               setPickedVerses={setPickedVerses}
               item={i}
               checkable={selecting !== SelectingEnum.NO}
+              searchTerm={searchTerm}
             />
           ))}
           <Row className="justify-content-end">

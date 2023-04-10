@@ -4,4 +4,15 @@ const TYPE_ENUM = {
   any: 3,
 };
 
-export { TYPE_ENUM };
+const SelectingEnum = {
+  NO: 0,
+  YES: 1,
+  YES_NARROW: 2,
+
+  switchSelecting: (i) =>
+    i === SelectingEnum.NO ? SelectingEnum.YES : SelectingEnum.NO,
+
+  switchOnly: (i) => (i ? SelectingEnum.YES_NARROW : SelectingEnum.YES),
+};
+
+export { TYPE_ENUM, SelectingEnum };

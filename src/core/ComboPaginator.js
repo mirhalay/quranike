@@ -12,7 +12,7 @@ export default function ComboPaginator({ paginator, hideSingle = false }) {
         <FormSelect
           size="sm"
           className="mx-2"
-          style={{ maxWidth: 70 }}
+          style={{ maxWidth: "auto" }}
           onChange={(i) => paginator?.setPage(parseInt(i.target.value))}
           value={paginator?.page}
         >
