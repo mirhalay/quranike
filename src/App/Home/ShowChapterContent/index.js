@@ -12,26 +12,28 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { FormattedMessage, useIntl } from "react-intl";
+import { AiOutlineSearch as SearchIcon } from "react-icons/ai";
+import {
+  TbSelect as SelectIcon,
+  TbEdit as EditIcon,
+  TbFilterOff as ResetIcon,
+} from "react-icons/tb";
+import { IoMdCheckmark as SaveIcon } from "react-icons/io";
+import { BiHide as OnlyIcon } from "react-icons/bi";
+// import { RxCross2 as CancelIcon } from "react-icons/rx";
+
 import ComboPaginator from "../../../core/ComboPaginator";
 import {
   getIdListByRange,
   isIdRangeIncluded,
 } from "../../../helpers/ranged_ids";
+import { SelectingEnum } from "../../../constants";
+import { randomDifferentIntsFromInterval } from "../../../helpers/randoms";
 import useChapterContent from "../../../helpers/useChapterContent";
 import usePagination from "../../../helpers/usePagination";
 import VersesStr from "../../../helpers/verses_str";
 import CheckableVerseItem from "./CheckableVerseItem";
-import {
-  AiOutlineSelect as SelectIcon,
-  AiOutlineSave as SaveIcon,
-  AiFillEdit as EditIcon,
-  AiOutlineFilter as OnlyIcon,
-} from "react-icons/ai";
-import { TiDeleteOutline as ResetIcon } from "react-icons/ti";
-import { RxReset as CancelIcon } from "react-icons/rx";
-import { BsSearch as SearchIcon } from "react-icons/bs";
 import SearchVersesModal from "./SearchVersesModal";
-import { SelectingEnum } from "../../../constants";
 
 const PAGE_LEN = 25;
 
@@ -104,10 +106,33 @@ export default function ShowChapterContent({
       setSelecting(SelectingEnum.YES);
   }, [pickedVerses, selecting]);
 
+  // shows random verses
   useEffect(() => {
-    paginator?.setPage(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm]);
+    if (chapterContent) {
+      const randQuantity =
+        pickedVerses.length === 1 &&
+        parseInt(pickedVerses[0]) < 0 &&
+        Math.abs(parseInt(pickedVerses[0]));
+      if (randQuantity) {
+        const versesAll = chapterContent.verses;
+
+        const randIDIndexes = randomDifferentIntsFromInterval(
+          randQuantity,
+          0,
+          versesAll.length - 1
+        );
+
+        let arr = [];
+        for (let i = 0; i < randIDIndexes.length; i++) {
+          const randID_item = versesAll[randIDIndexes[i]].id;
+          arr.push(...getIdListByRange(randID_item));
+        }
+        arr = arr.sort((m, n) => (m > n ? 1 : -1));
+        // console.log(arr);
+        setPickedVerses(arr);
+      }
+    }
+  }, [pickedVerses, chapterContent]);
 
   const SelectionBtns = () => (
     <ButtonGroup>
@@ -141,37 +166,37 @@ export default function ShowChapterContent({
         )}{" "}
       </Button>
 
-      {selecting !== SelectingEnum.NO ? (
-        <Button
-          size="sm"
-          variant="outline-secondary"
-          onClick={() => {
-            const selectedVersesArr =
-              versesStrHelper.destructSelectedVersesString(
-                selectedVersesString
-              );
-            setPickedVerses(
-              selectedVersesArr.length > 0 ? selectedVersesArr : []
-            );
-            setSelecting(SelectingEnum.NO);
-          }}
-        >
-          <CancelIcon />
-        </Button>
-      ) : (
-        pickedVerses.length > 0 && (
-          <Button
-            size="sm"
-            variant="outline-secondary"
-            onClick={() => {
-              setSelectedVersesString(null, true);
-              paginator?.setPage(1);
-            }}
-          >
-            <ResetIcon />
-          </Button>
-        )
-      )}
+      {selecting !== SelectingEnum.NO
+        ? null
+        : // <Button
+          //   size="sm"
+          //   variant="outline-secondary"
+          //   onClick={() => {
+          //     const selectedVersesArr =
+          //       versesStrHelper.destructSelectedVersesString(
+          //         selectedVersesString
+          //       );
+          //     setPickedVerses(
+          //       selectedVersesArr.length > 0 ? selectedVersesArr : []
+          //     );
+          //     setSelecting(SelectingEnum.NO);
+          //     paginator?.setPage(1)
+          //   }}
+          // >
+          //   <CancelIcon />
+          // </Button>
+          pickedVerses.length > 0 && (
+            <Button
+              size="sm"
+              variant="outline-secondary"
+              onClick={() => {
+                setSelectedVersesString(null, true);
+                paginator?.setPage(1);
+              }}
+            >
+              <ResetIcon />
+            </Button>
+          )}
     </ButtonGroup>
   );
 
@@ -183,6 +208,7 @@ export default function ShowChapterContent({
         filterText={searchTerm}
         setFilterText={(termStr) => {
           if (termStr) {
+            paginator?.setPage(1);
             setShowSearchModal(false);
             setSearchTerm(termStr);
           }
@@ -240,7 +266,10 @@ export default function ShowChapterContent({
                 <FormattedMessage id="search_results" />{" "}
                 <Badge
                   className="bg-secondary text-light"
-                  onClick={() => setSearchTerm(null)}
+                  onClick={() => {
+                    paginator?.setPage(1);
+                    setSearchTerm(null);
+                  }}
                 >
                   {searchTerm} <CloseButton variant="white" />
                 </Badge>
