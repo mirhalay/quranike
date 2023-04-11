@@ -129,9 +129,11 @@ export default function ShowChapterContent({
         }
         arr = arr.sort((m, n) => (m > n ? 1 : -1));
         // console.log(arr);
+        paginator?.setPage(1);
         setPickedVerses(arr);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pickedVerses, chapterContent]);
 
   const SelectionBtns = () => (
@@ -207,7 +209,14 @@ export default function ShowChapterContent({
         show={showSearchModal}
         filterText={searchTerm}
         setFilterText={(termStr) => {
-          if (termStr) {
+          if (termStr.startsWith("!r")) {
+            const randQuantity = parseInt(termStr.substring(2));
+            if (!isNaN(randQuantity)) {
+              paginator?.setPage(1);
+              setSelectedVersesString(-1 * randQuantity);
+              setShowSearchModal(false);
+            }
+          } else if (termStr) {
             paginator?.setPage(1);
             setShowSearchModal(false);
             setSearchTerm(termStr);
