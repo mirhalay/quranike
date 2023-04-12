@@ -2,6 +2,8 @@ const TYPE_ENUM = {
   meccan: 1,
   medinan: 2,
   any: 3,
+
+  isNumValidType: (num) => num === 1 || num === 2 || num === 3,
 };
 
 const SelectingEnum = {

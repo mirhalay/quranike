@@ -1,54 +1,48 @@
-import { useState } from "react";
-import { Button, FormSelect, Stack } from "react-bootstrap";
-import { useIntl } from "react-intl";
-import chaptersJSON from "../../../chapters.json";
+import { Button, FormSelect, FormText, Row, Stack } from "react-bootstrap";
+import { FormattedMessage, useIntl } from "react-intl";
+
 import { FaEllipsisH as SearchIcon } from "react-icons/fa";
-import SearchChaptersModal from "./SearchChaptersModal";
 
 export default function ComboChapters({
   selectedChapterID,
   setSelectedChapterID,
+  chapters,
+  showChaptersModal,
 }) {
   const { locale, $t } = useIntl();
-  const [showSearchModal, setShowSearchModal] = useState();
-  const [chapters] = useState(
-    chaptersJSON.sort((j, k) => (j.reveal_order > k.reveal_order ? 1 : -1))
-  );
 
   return (
-    <Stack direction="horizontal">
-      <FormSelect
-        value={selectedChapterID}
-        onChange={(i) => setSelectedChapterID(i.target.value)}
-      >
-        <option value={0}>[{$t({ id: "not_selected" })}]</option>
-        {chapters &&
-          chapters.map((i) => (
-            <option key={i.id} value={i.id}>
-              {i[locale.substring(0, 2)]} :{i.id}
-            </option>
-          ))}
-      </FormSelect>
+    selectedChapterID >= 0 && (
+      <Stack direction="horizontal" className="mt-3 align-items-start">
+        <FormText className="me-2">
+          <FormattedMessage id="chapter" />:
+        </FormText>
+        <Row>
+          <Stack direction="horizontal">
+            <FormSelect
+              value={selectedChapterID}
+              onChange={(i) => setSelectedChapterID(i.target.value)}
+            >
+              <option value={0}>[{$t({ id: "not_selected" })}]</option>
+              {chapters &&
+                chapters.map((i) => (
+                  <option key={i.id} value={i.id}>
+                    {i[locale.substring(0, 2)]} :{i.id}
+                  </option>
+                ))}
+            </FormSelect>
 
-      <Button
-        className="ms-1"
-        onClick={() => setShowSearchModal(true)}
-        size="sm"
-        variant="outline-secondary"
-      >
-        <SearchIcon />
-      </Button>
-
-      <SearchChaptersModal
-        onHide={setShowSearchModal}
-        chapterList={showSearchModal && chapters}
-        onChapterSelected={function (chapterID) {
-          if (chapterID) {
-            setShowSearchModal(false);
-            setSelectedChapterID(chapterID);
-          }
-        }}
-      />
-    </Stack>
+            <Button
+              className="ms-1"
+              onClick={showChaptersModal}
+              size="sm"
+              variant="outline-secondary"
+            >
+              <SearchIcon />
+            </Button>
+          </Stack>
+        </Row>
+      </Stack>
+    )
   );
 }
