@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/quranike/static/css/main.964af7fc.css",
-    "main.js": "/quranike/static/js/main.aa13289f.js",
+    "main.js": "/quranike/static/js/main.d382df67.js",
     "index.html": "/quranike/index.html",
     "main.964af7fc.css.map": "/quranike/static/css/main.964af7fc.css.map",
-    "main.aa13289f.js.map": "/quranike/static/js/main.aa13289f.js.map"
+    "main.d382df67.js.map": "/quranike/static/js/main.d382df67.js.map"
   },
   "entrypoints": [
     "static/css/main.964af7fc.css",
-    "static/js/main.aa13289f.js"
+    "static/js/main.d382df67.js"
   ]
 }
