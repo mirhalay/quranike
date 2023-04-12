@@ -29,14 +29,14 @@ export default function Home() {
     <div className="p-3">
       <ChapterFilter
         selectedChapterID={selectedChapterID}
-        setSelectedChapterID={(sc, changeParam = true) => {
+        setSelectedChapterID={(scIDStr, changeParam = true) => {
           if (changeParam) {
             const x = {};
             if (params.has("hl")) x.hl = params.get("hl");
-            if (sc > 0) x.sc = sc;
+            if (scIDStr > 0) x.sc = scIDStr;
             setParams(x);
           }
-          setSelectedChapterID(sc);
+          setSelectedChapterID(parseInt(scIDStr));
         }}
       />
 

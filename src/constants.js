@@ -4,6 +4,8 @@ const TYPE_ENUM = {
   any: 3,
 
   isNumValidType: (num) => num === 1 || num === 2 || num === 3,
+
+  isKeySameWithVal: (typeStr,typeVal) => TYPE_ENUM[typeStr] === typeVal,
 };
 
 const SelectingEnum = {

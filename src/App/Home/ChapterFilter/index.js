@@ -1,12 +1,23 @@
 import { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { randomIntFromInterval } from "../../../helpers/randoms";
+import {
+  randomIntFromInterval,
+  randomItemFromArray,
+} from "../../../helpers/randoms";
 import ComboChapters from "./ComboChapters";
 import chaptersJSON from "../../../chapters.json";
 import SearchChaptersModal from "./SearchChaptersModal";
 import { TYPE_ENUM } from "../../../constants";
 
 const INIT_TYPE = TYPE_ENUM.any;
+
+function getTypelyChapters(chapters, typeFilterValue) {
+  return typeFilterValue !== TYPE_ENUM.any
+    ? chapters.filter((i) =>
+        TYPE_ENUM.isKeySameWithVal(i.type, typeFilterValue)
+      )
+    : chapters;
+}
 
 export default function ChapterFilter({
   selectedChapterID,
@@ -19,23 +30,28 @@ export default function ChapterFilter({
 
   const filterTypeState = useState(INIT_TYPE);
 
-  const typeFilterValue = filterTypeState[0];
-
-  const predEqualType =
-    typeFilterValue === TYPE_ENUM.any
-      ? null
-      : (i) => TYPE_ENUM[i.type] === typeFilterValue;
+  const [typeFilterValue, setFilterTypeState] = filterTypeState;
 
   useEffect(() => {
     if (selectedChapterID < 0) {
-      setSelectedChapterID(randomIntFromInterval(1, 114), false);
+      const typeValCandidate = Math.abs(selectedChapterID);
+      if (TYPE_ENUM.isNumValidType(typeValCandidate))
+        setSelectedChapterID(
+          randomItemFromArray(getTypelyChapters(chapters, typeValCandidate)).id,
+          false
+        );
+      else setSelectedChapterID(randomIntFromInterval(1, 114), false);
+    } else {
+      selectedChapterID > 0 &&
+        setFilterTypeState(
+          TYPE_ENUM[chapters.find(({ id }) => id === selectedChapterID).type]
+        );
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChapterID]);
 
-  const typelyChapters = predEqualType
-    ? chapters.filter(predEqualType)
-    : chapters;
+  const typelyChapters = getTypelyChapters(chapters, typeFilterValue);
 
   const chapterModal = (
     <SearchChaptersModal
