@@ -2,7 +2,7 @@
   {
     "id": 114,
     "en": "An-Nas",
-    "tr": "Nâs",
+    "tr": "Nas",
     "type": "meccan",
     "total_verses": 6,
     "reveal_order": 21
@@ -18,7 +18,7 @@
   {
     "id": 112,
     "en": "Al-Ikhlas",
-    "tr": "İhlâs",
+    "tr": "İhlas",
     "type": "meccan",
     "total_verses": 4,
     "reveal_order": 22
@@ -42,7 +42,7 @@
   {
     "id": 109,
     "en": "Al-Kafirun",
-    "tr": "Kâfirûn",
+    "tr": "Kafirun",
     "type": "meccan",
     "total_verses": 6,
     "reveal_order": 18
@@ -58,7 +58,7 @@
   {
     "id": 107,
     "en": "Al-Ma'un",
-    "tr": "Maûn",
+    "tr": "Maun",
     "type": "meccan",
     "total_verses": 7,
     "reveal_order": 17
@@ -74,7 +74,7 @@
   {
     "id": 105,
     "en": "Al-Fil",
-    "tr": "Fîl",
+    "tr": "Fil",
     "type": "meccan",
     "total_verses": 5,
     "reveal_order": 19
@@ -98,7 +98,7 @@
   {
     "id": 102,
     "en": "At-Takathur",
-    "tr": "Tekâsür",
+    "tr": "Tekasür",
     "type": "meccan",
     "total_verses": 8,
     "reveal_order": 16
@@ -106,7 +106,7 @@
   {
     "id": 101,
     "en": "Al-Qari'ah",
-    "tr": "Kâria",
+    "tr": "Karia",
     "type": "meccan",
     "total_verses": 11,
     "reveal_order": 30
@@ -114,7 +114,7 @@
   {
     "id": 100,
     "en": "Al-'Adiyat",
-    "tr": "Âdiyât",
+    "tr": "Adiyat",
     "type": "meccan",
     "total_verses": 11,
     "reveal_order": 14
@@ -122,7 +122,7 @@
   {
     "id": 99,
     "en": "Az-Zalzalah",
-    "tr": "Zilzâl",
+    "tr": "Zilzal",
     "type": "medinan",
     "total_verses": 8,
     "reveal_order": 93
@@ -154,7 +154,7 @@
   {
     "id": 95,
     "en": "At-Tin",
-    "tr": "Tîn",
+    "tr": "Tin",
     "type": "meccan",
     "total_verses": 8,
     "reveal_order": 28
@@ -162,7 +162,7 @@
   {
     "id": 94,
     "en": "Ash-Sharh",
-    "tr": "İnşirâh",
+    "tr": "İnşirah",
     "type": "meccan",
     "total_verses": 8,
     "reveal_order": 12
@@ -170,7 +170,7 @@
   {
     "id": 93,
     "en": "Ad-Duhaa",
-    "tr": "Duhâ",
+    "tr": "Duha",
     "type": "meccan",
     "total_verses": 11,
     "reveal_order": 11
@@ -210,7 +210,7 @@
   {
     "id": 88,
     "en": "Al-Ghashiyah",
-    "tr": "Gâşiye",
+    "tr": "Gaşiye",
     "type": "meccan",
     "total_verses": 26,
     "reveal_order": 68
@@ -218,7 +218,7 @@
   {
     "id": 87,
     "en": "Al-A'la",
-    "tr": "A'lâ",
+    "tr": "A'la",
     "type": "meccan",
     "total_verses": 19,
     "reveal_order": 8
@@ -226,7 +226,7 @@
   {
     "id": 86,
     "en": "At-Tariq",
-    "tr": "Târık",
+    "tr": "Tarık",
     "type": "meccan",
     "total_verses": 17,
     "reveal_order": 36
@@ -234,7 +234,7 @@
   {
     "id": 85,
     "en": "Al-Buruj",
-    "tr": "Burûc",
+    "tr": "Buruc",
     "type": "meccan",
     "total_verses": 22,
     "reveal_order": 27
@@ -242,7 +242,7 @@
   {
     "id": 84,
     "en": "Al-Inshiqaq",
-    "tr": "İnşikâk",
+    "tr": "İnşikak",
     "type": "meccan",
     "total_verses": 25,
     "reveal_order": 83
@@ -250,7 +250,7 @@
   {
     "id": 83,
     "en": "Al-Mutaffifin",
-    "tr": "Mutaffifîn",
+    "tr": "Mutaffifin",
     "type": "meccan",
     "total_verses": 36,
     "reveal_order": 86
@@ -258,7 +258,7 @@
   {
     "id": 82,
     "en": "Al-Infitar",
-    "tr": "İnfitâr",
+    "tr": "İnfitar",
     "type": "meccan",
     "total_verses": 19,
     "reveal_order": 82
@@ -266,7 +266,7 @@
   {
     "id": 81,
     "en": "At-Takwir",
-    "tr": "Tekvîr",
+    "tr": "Tekvir",
     "type": "meccan",
     "total_verses": 29,
     "reveal_order": 7
@@ -282,7 +282,7 @@
   {
     "id": 79,
     "en": "An-Nazi'at",
-    "tr": "Naziât",
+    "tr": "Naziat",
     "type": "meccan",
     "total_verses": 46,
     "reveal_order": 81
@@ -298,7 +298,7 @@
   {
     "id": 77,
     "en": "Al-Mursalat",
-    "tr": "Mürselât",
+    "tr": "Mürselat",
     "type": "meccan",
     "total_verses": 50,
     "reveal_order": 33
@@ -306,7 +306,7 @@
   {
     "id": 76,
     "en": "Al-Insan",
-    "tr": "İnsân",
+    "tr": "İnsan",
     "type": "medinan",
     "total_verses": 31,
     "reveal_order": 98
@@ -314,7 +314,7 @@
   {
     "id": 75,
     "en": "Al-Qiyamah",
-    "tr": "Kıyâmet",
+    "tr": "Kıyamet",
     "type": "meccan",
     "total_verses": 40,
     "reveal_order": 31
@@ -346,7 +346,7 @@
   {
     "id": 71,
     "en": "Nuh",
-    "tr": "Nûh",
+    "tr": "Nuh",
     "type": "meccan",
     "total_verses": 28,
     "reveal_order": 71
@@ -354,7 +354,7 @@
   {
     "id": 70,
     "en": "Al-Ma'arij",
-    "tr": "Meâric",
+    "tr": "Mearic",
     "type": "meccan",
     "total_verses": 44,
     "reveal_order": 79
@@ -362,7 +362,7 @@
   {
     "id": 69,
     "en": "Al-Haqqah",
-    "tr": "Hâkka",
+    "tr": "Hakka",
     "type": "meccan",
     "total_verses": 52,
     "reveal_order": 78
@@ -386,7 +386,7 @@
   {
     "id": 66,
     "en": "At-Tahrim",
-    "tr": "Tahrîm",
+    "tr": "Tahrim",
     "type": "medinan",
     "total_verses": 12,
     "reveal_order": 107
@@ -394,7 +394,7 @@
   {
     "id": 65,
     "en": "At-Talaq",
-    "tr": "Talâk",
+    "tr": "Talak",
     "type": "medinan",
     "total_verses": 12,
     "reveal_order": 99
@@ -402,7 +402,7 @@
   {
     "id": 64,
     "en": "At-Taghabun",
-    "tr": "Tegâbün",
+    "tr": "Tegabün",
     "type": "medinan",
     "total_verses": 18,
     "reveal_order": 108
@@ -410,7 +410,7 @@
   {
     "id": 63,
     "en": "Al-Munafiqun",
-    "tr": "Münâfikûn",
+    "tr": "Münafikun",
     "type": "medinan",
     "total_verses": 11,
     "reveal_order": 104
@@ -450,7 +450,7 @@
   {
     "id": 58,
     "en": "Al-Mujadila",
-    "tr": "Mücâdele",
+    "tr": "Mücadele",
     "type": "medinan",
     "total_verses": 22,
     "reveal_order": 105
@@ -458,7 +458,7 @@
   {
     "id": 57,
     "en": "Al-Hadid",
-    "tr": "Hadîd",
+    "tr": "Hadid",
     "type": "medinan",
     "total_verses": 29,
     "reveal_order": 94
@@ -466,7 +466,7 @@
   {
     "id": 56,
     "en": "Al-Waqi'ah",
-    "tr": "Vâkıa",
+    "tr": "Vakıa",
     "type": "meccan",
     "total_verses": 96,
     "reveal_order": 46
@@ -474,7 +474,7 @@
   {
     "id": 55,
     "en": "Ar-Rahman",
-    "tr": "Rahmân",
+    "tr": "Rahman",
     "type": "medinan",
     "total_verses": 78,
     "reveal_order": 97
@@ -498,7 +498,7 @@
   {
     "id": 52,
     "en": "At-Tur",
-    "tr": "Tûr",
+    "tr": "Tur",
     "type": "meccan",
     "total_verses": 49,
     "reveal_order": 76
@@ -506,7 +506,7 @@
   {
     "id": 51,
     "en": "Adh-Dhariyat",
-    "tr": "Zâriyât",
+    "tr": "Zariyat",
     "type": "meccan",
     "total_verses": 60,
     "reveal_order": 67
@@ -514,7 +514,7 @@
   {
     "id": 50,
     "en": "Qaf",
-    "tr": "Kâf",
+    "tr": "Kaf",
     "type": "meccan",
     "total_verses": 45,
     "reveal_order": 34
@@ -522,7 +522,7 @@
   {
     "id": 49,
     "en": "Al-Hujurat",
-    "tr": "Hucurât",
+    "tr": "Hucurat",
     "type": "medinan",
     "total_verses": 18,
     "reveal_order": 106
@@ -546,7 +546,7 @@
   {
     "id": 46,
     "en": "Al-Ahqaf",
-    "tr": "Ahkâf",
+    "tr": "Ahkaf",
     "type": "meccan",
     "total_verses": 35,
     "reveal_order": 66
@@ -554,7 +554,7 @@
   {
     "id": 45,
     "en": "Al-Jathiyah",
-    "tr": "Câsiye",
+    "tr": "Casiye",
     "type": "meccan",
     "total_verses": 37,
     "reveal_order": 65
@@ -562,7 +562,7 @@
   {
     "id": 44,
     "en": "Ad-Dukhan",
-    "tr": "Duhân",
+    "tr": "Duhan",
     "type": "meccan",
     "total_verses": 59,
     "reveal_order": 64
@@ -578,7 +578,7 @@
   {
     "id": 42,
     "en": "Ash-Shuraa",
-    "tr": "Şûrâ",
+    "tr": "Şura",
     "type": "meccan",
     "total_verses": 53,
     "reveal_order": 62
@@ -610,7 +610,7 @@
   {
     "id": 38,
     "en": "Sad",
-    "tr": "Sâd",
+    "tr": "Sad",
     "type": "meccan",
     "total_verses": 88,
     "reveal_order": 38
@@ -618,7 +618,7 @@
   {
     "id": 37,
     "en": "As-Saffat",
-    "tr": "Sâffât",
+    "tr": "Saffat",
     "type": "meccan",
     "total_verses": 182,
     "reveal_order": 56
@@ -626,7 +626,7 @@
   {
     "id": 36,
     "en": "Ya-Sin",
-    "tr": "Yâsîn",
+    "tr": "Yasin",
     "type": "meccan",
     "total_verses": 83,
     "reveal_order": 41
@@ -634,7 +634,7 @@
   {
     "id": 35,
     "en": "Fatir",
-    "tr": "Fâtır",
+    "tr": "Fatır",
     "type": "meccan",
     "total_verses": 45,
     "reveal_order": 44
@@ -650,7 +650,7 @@
   {
     "id": 33,
     "en": "Al-Ahzab",
-    "tr": "Ahzâb",
+    "tr": "Ahzab",
     "type": "medinan",
     "total_verses": 73,
     "reveal_order": 90
@@ -666,7 +666,7 @@
   {
     "id": 31,
     "en": "Luqman",
-    "tr": "Lokmân",
+    "tr": "Lokman",
     "type": "meccan",
     "total_verses": 34,
     "reveal_order": 57
@@ -674,7 +674,7 @@
   {
     "id": 30,
     "en": "Ar-Rum",
-    "tr": "Rûm",
+    "tr": "Rum",
     "type": "meccan",
     "total_verses": 60,
     "reveal_order": 84
@@ -682,7 +682,7 @@
   {
     "id": 29,
     "en": "Al-'Ankabut",
-    "tr": "Ankebût",
+    "tr": "Ankebut",
     "type": "meccan",
     "total_verses": 69,
     "reveal_order": 85
@@ -706,7 +706,7 @@
   {
     "id": 26,
     "en": "Ash-Shu'ara",
-    "tr": "Şuarâ",
+    "tr": "Şuara",
     "type": "meccan",
     "total_verses": 227,
     "reveal_order": 47
@@ -714,7 +714,7 @@
   {
     "id": 25,
     "en": "Al-Furqan",
-    "tr": "Furkân",
+    "tr": "Furkan",
     "type": "meccan",
     "total_verses": 77,
     "reveal_order": 42
@@ -722,7 +722,7 @@
   {
     "id": 24,
     "en": "An-Nur",
-    "tr": "Nûr",
+    "tr": "Nur",
     "type": "medinan",
     "total_verses": 64,
     "reveal_order": 102
@@ -730,7 +730,7 @@
   {
     "id": 23,
     "en": "Al-Mu'minun",
-    "tr": "Mü'minûn",
+    "tr": "Mü'minun",
     "type": "meccan",
     "total_verses": 118,
     "reveal_order": 74
@@ -746,7 +746,7 @@
   {
     "id": 21,
     "en": "Al-Anbya",
-    "tr": "Enbiyâ",
+    "tr": "Enbiya",
     "type": "meccan",
     "total_verses": 112,
     "reveal_order": 73
@@ -754,7 +754,7 @@
   {
     "id": 20,
     "en": "Taha",
-    "tr": "Tâhâ",
+    "tr": "Taha",
     "type": "meccan",
     "total_verses": 135,
     "reveal_order": 45
@@ -778,7 +778,7 @@
   {
     "id": 17,
     "en": "Al-Isra",
-    "tr": "İsrâ",
+    "tr": "İsra",
     "type": "meccan",
     "total_verses": 111,
     "reveal_order": 50
@@ -802,7 +802,7 @@
   {
     "id": 14,
     "en": "Ibrahim",
-    "tr": "İbrâhîm",
+    "tr": "İbrahim",
     "type": "meccan",
     "total_verses": 52,
     "reveal_order": 72
@@ -818,7 +818,7 @@
   {
     "id": 12,
     "en": "Yusuf",
-    "tr": "Yûsuf",
+    "tr": "Yusuf",
     "type": "meccan",
     "total_verses": 111,
     "reveal_order": 53
@@ -826,7 +826,7 @@
   {
     "id": 11,
     "en": "Hud",
-    "tr": "Hûd",
+    "tr": "Hud",
     "type": "meccan",
     "total_verses": 123,
     "reveal_order": 52
@@ -834,7 +834,7 @@
   {
     "id": 10,
     "en": "Yunus",
-    "tr": "Yûnus",
+    "tr": "Yunus",
     "type": "meccan",
     "total_verses": 109,
     "reveal_order": 51
@@ -850,7 +850,7 @@
   {
     "id": 8,
     "en": "Al-Anfal",
-    "tr": "Enfâl",
+    "tr": "Enfal",
     "type": "medinan",
     "total_verses": 75,
     "reveal_order": 88
@@ -858,7 +858,7 @@
   {
     "id": 7,
     "en": "Al-A'raf",
-    "tr": "A'râf",
+    "tr": "A'raf",
     "type": "meccan",
     "total_verses": 206,
     "reveal_order": 39
@@ -866,7 +866,7 @@
   {
     "id": 6,
     "en": "Al-An'am",
-    "tr": "En'âm",
+    "tr": "En'am",
     "type": "meccan",
     "total_verses": 165,
     "reveal_order": 55
@@ -874,7 +874,7 @@
   {
     "id": 5,
     "en": "Al-Ma'idah",
-    "tr": "Mâide",
+    "tr": "Maide",
     "type": "medinan",
     "total_verses": 120,
     "reveal_order": 112
@@ -882,7 +882,7 @@
   {
     "id": 4,
     "en": "An-Nisa",
-    "tr": "Nisâ",
+    "tr": "Nisa",
     "type": "medinan",
     "total_verses": 176,
     "reveal_order": 92
@@ -890,7 +890,7 @@
   {
     "id": 3,
     "en": "Ali 'Imran",
-    "tr": "Âl-i İmrân",
+    "tr": "Al-i İmran",
     "type": "medinan",
     "total_verses": 200,
     "reveal_order": 89
@@ -906,7 +906,7 @@
   {
     "id": 1,
     "en": "Al-Fatihah",
-    "tr": "Fâtiha",
+    "tr": "Fatiha",
     "type": "meccan",
     "total_verses": 7,
     "reveal_order": 5

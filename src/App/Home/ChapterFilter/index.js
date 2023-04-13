@@ -64,6 +64,7 @@ export default function ChapterFilter({
           setSelectedChapterID(chapterID);
         }
       }}
+      currentChapterID={selectedChapterID}
     />
   );
 
