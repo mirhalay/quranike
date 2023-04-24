@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { FormControl, ListGroup, Modal } from "react-bootstrap";
+import { ListGroup, Modal } from "react-bootstrap";
 import { useIntl } from "react-intl";
 import CheckType from "./CheckType";
+import ClearableInput from "../../../core/ClearableInput";
 
 function matchChapterName(needle, haystack, lang = "tr") {
   const hay_ = haystack[lang]
@@ -30,7 +31,8 @@ export default function SearchChaptersModal({
   const [filterText, setFilterText] = useState("");
 
   const filteredChapters = filterText
-    ? chapterList?.filter(
+    ? chapterList &&
+      chapterList.filter(
         (i) =>
           matchChapterName(filterText, i, locale.substring(0, 2)) ||
           i.id.toString().startsWith(filterText)
@@ -39,19 +41,21 @@ export default function SearchChaptersModal({
 
   return (
     <Modal size="sm" show={chapterList} centered onHide={onHide}>
+      <Modal.Header closeButton>{$t({ id: "chapter" })}</Modal.Header>
       <Modal.Body className="show-grid">
-        <FormControl
+        <ClearableInput
           defaultValue={filterText}
           placeholder={$t({ id: "find_chapter" })}
           onKeyDown={(i) => {
             if (i.key === "Enter") setFilterText(i.target.value?.trim());
           }}
         />
+
         <div className="mb-2 border-bottom">
           <CheckType className="mb-1" filterTypeState={filterTypeState} />
         </div>
         {chapterList && (
-          <ListGroup style={{ maxHeight: 350, overflowY: "scroll" }}>
+          <ListGroup style={{ maxHeight: 320, overflowY: "scroll" }}>
             {filteredChapters?.map((i) => (
               <ListGroup.Item
                 action={i.id !== currentChapterID && "#"}
